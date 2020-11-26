@@ -30,26 +30,31 @@ class _SearchPageState extends State<SearchPage> {
     weatherBloc = BlocProvider.of<WeatherBloc>(context);
     var cityController = TextEditingController();
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        BlocBuilder<WeatherBloc, WeatherState>(
-          builder: (context, state) {
-            if (state is WeatherIsNotSearched)
-              return Expanded(child: getListView());
-            else if (state is WeatherIsLoading)
-              return Center(child: CircularProgressIndicator());
-            else if (state is WeatherIsLoaded)
-              return NextPage(widget._pageController);
-            else
-              return Text(
-                "Error",
-                style: TextStyle(color: Colors.white),
-              );
-          },
-        )
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Weather App"),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          BlocBuilder<WeatherBloc, WeatherState>(
+            builder: (context, state) {
+              if (state is WeatherIsNotSearched)
+                return Expanded(child: getListView());
+              else if (state is WeatherIsLoading)
+                return Center(child: CircularProgressIndicator());
+              else if (state is WeatherIsLoaded)
+                return NextPage(widget._pageController);
+              else
+                return Text(
+                  "Error",
+                  style: TextStyle(color: Colors.white),
+                );
+            },
+          )
+        ],
+      ),
     );
   }
 

@@ -41,9 +41,7 @@ class _MyHomeState extends State<MyHome> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: AppBar(
-        title: Text("Weather App"),
-      ),
+
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: PageView(
