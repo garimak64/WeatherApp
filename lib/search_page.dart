@@ -15,7 +15,14 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
 
-  List<String> cities = [""];
+  List<String> cities = ["Ahmedabad","Delhi","Mumbai","Hyderabad","Kolkata"];
+
+  static Image aImage = Image.asset("assets/images/ahmedabad.jpeg",);
+  static Image dImage = Image.asset("assets/images/delhi.jpeg",);
+  static Image mImage = Image.asset("assets/images/mumbai.jpeg",);
+  static Image hImage = Image.asset("assets/images/hyderabad.jpeg",);
+  static Image kImage = Image.asset("assets/images/kolkata.jpeg",);
+  List<Image> images = [aImage,dImage,mImage,hImage,kImage];
   WeatherBloc weatherBloc;
 
   @override
@@ -30,74 +37,7 @@ class _SearchPageState extends State<SearchPage> {
         BlocBuilder<WeatherBloc, WeatherState>(
           builder: (context, state) {
             if (state is WeatherIsNotSearched)
-              return Container(
-                padding: EdgeInsets.only(
-                  left: 32,
-                  right: 32,
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Search Weather",
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white70),
-                    ),
-                    Text(
-                      "Instanly",
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w200,
-                          color: Colors.white70),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    TextFormField(
-                      controller: cityController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.white70,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                                color: Colors.white70,
-                                style: BorderStyle.solid)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                                color: Colors.blue, style: BorderStyle.solid)),
-                        hintText: "City Name",
-                        hintStyle: TextStyle(color: Colors.white70),
-                      ),
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: 50,
-                      child: FlatButton(
-                        shape: new RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        onPressed: () {
-                          weatherBloc.add(FetchWeather(cityController.text));
-                        },
-                        color: Colors.lightBlue,
-                        child: Text(
-                          "Search",
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              );
+              return Expanded(child: getListView());
             else if (state is WeatherIsLoading)
               return Center(child: CircularProgressIndicator());
             else if (state is WeatherIsLoaded)
@@ -118,6 +58,245 @@ class _SearchPageState extends State<SearchPage> {
     // TODO: implement dispose
     super.dispose();
 
+  }
+
+  Widget _buildProgrammCard() {
+    return Container(
+      height: 150,
+      decoration: BoxDecoration(
+
+
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+
+      ),
+      child: Card(
+        color: Colors.orange,
+        child: Column(
+          children: [
+
+            Expanded(
+              flex: 1,
+                child: Text('Ahmedabad')),
+            Expanded(flex:1,
+                child: aImage),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ListView getListView()
+  {
+     return ListView.builder(
+       scrollDirection: Axis.vertical,
+       shrinkWrap: true,
+       itemCount: cities.length,
+       itemBuilder: (context, index) {
+         return Padding(
+           padding: const EdgeInsets.only(left:18.0,right: 20,top: 15),
+           child: Card(
+             shape: RoundedRectangleBorder(
+               borderRadius: BorderRadius.circular(15.0),
+             ),
+             elevation: 20,
+             child: Container(
+
+               height: 150,
+               decoration: BoxDecoration(
+                   gradient: LinearGradient(
+                       colors: [Colors.green, Colors.blue]),
+
+                   borderRadius: BorderRadius.all(Radius.circular(15)),
+
+               ),
+               child: ListTile(
+                 leading:images[index],
+                 title: Text(cities[index],
+                 style: TextStyle(
+                   color: Colors.white
+                 ),),
+                 onTap: ()=>  weatherBloc.add(FetchWeather(cities[index])),
+               ),
+             ),
+           ),
+         );
+       },
+
+     );
+  }
+
+  Container getContainer(TextEditingController cityController)
+  {
+     return Container(
+       padding: EdgeInsets.only(
+         left: 32,
+         right: 32,
+       ),
+       child: Column(
+         children: <Widget>[
+           Container(
+             height: 150,
+             child: Card(
+               shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(15.0),
+               ),
+               elevation: 20,
+               color: Colors.pink,
+               child: ListTile(
+                 leading: Padding(
+                   padding: const EdgeInsets.only(top:15.0),
+                   child: Icon(Icons.local_airport, size: 50,
+                   color: Colors.white,),
+                 ),
+                 title: Padding(
+                   padding: const EdgeInsets.only(top:30.0),
+                   child: Text('Mumbai', style: TextStyle(
+                     fontWeight: FontWeight.bold,
+                     fontSize: 40,
+                     color: Colors.white
+                   ),),
+                 ),
+                 onTap: ()=>  weatherBloc.add(FetchWeather("Mumbai")),
+               ),
+             ),
+           ),
+
+
+           SizedBox(
+             height: 24,
+           ),
+
+           Container(
+             height: 150,
+             child: Card(
+               shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(15.0),
+               ),
+               elevation: 20,
+               color: Colors.green,
+               child: ListTile(
+                 leading: Padding(
+                   padding: const EdgeInsets.only(top:15.0),
+                   child: Icon(Icons.favorite, size: 50,
+                     color: Colors.white,),
+                 ),
+                 title: Padding(
+                   padding: const EdgeInsets.only(top:30.0),
+                   child: Text('Ahmedabad', style: TextStyle(
+                       fontWeight: FontWeight.bold,
+                       fontSize: 35,
+                       color: Colors.white
+                   ),),
+                 ),
+                 onTap: ()=>  weatherBloc.add(FetchWeather("Ahmedabad")),
+               ),
+             ),
+           ),
+
+           SizedBox(
+             height: 24,
+           ),
+
+           Container(
+             height: 150,
+             child: Card(
+               shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(15.0),
+               ),
+               elevation: 20,
+               color: Colors.deepPurple,
+               child: ListTile(
+                 leading: Padding(
+                   padding: const EdgeInsets.only(top:15.0),
+                   child: Icon(Icons.insert_emoticon, size: 50,
+                     color: Colors.white,),
+                 ),
+                 title: Padding(
+                   padding: const EdgeInsets.only(top:30.0),
+                   child: Text('Delhi', style: TextStyle(
+                       fontWeight: FontWeight.bold,
+                       fontSize: 35,
+                       color: Colors.white
+                   ),),
+                 ),
+                 onTap: ()=>  weatherBloc.add(FetchWeather("Delhi")),
+               ),
+             ),
+           ),
+
+           SizedBox(
+             height: 24,
+           ),
+
+
+//           TextFormField(
+//             controller: cityController,
+//             decoration: InputDecoration(
+//               prefixIcon: Icon(
+//                 Icons.search,
+//                 color: Colors.white70,
+//               ),
+//               enabledBorder: OutlineInputBorder(
+//                   borderRadius: BorderRadius.all(Radius.circular(10)),
+//                   borderSide: BorderSide(
+//                       color: Colors.white70,
+//                       style: BorderStyle.solid)),
+//               focusedBorder: OutlineInputBorder(
+//                   borderRadius: BorderRadius.all(Radius.circular(10)),
+//                   borderSide: BorderSide(
+//                       color: Colors.blue, style: BorderStyle.solid)),
+//               hintText: "City Name",
+//               hintStyle: TextStyle(color: Colors.white70),
+//             ),
+//             style: TextStyle(color: Colors.white70),
+//           ),
+//           SizedBox(
+//             height: 20,
+//           ),
+//           Container(
+//             width: double.infinity,
+//             height: 50,
+//             child: FlatButton(
+//               shape: new RoundedRectangleBorder(
+//                   borderRadius:
+//                   BorderRadius.all(Radius.circular(10))),
+//               onPressed: () {
+//                 weatherBloc.add(FetchWeather(cityController.text));
+//               },
+//               color: Colors.lightBlue,
+//               child: Text(
+//                 "Search",
+//                 style: TextStyle(color: Colors.white70, fontSize: 16),
+//               ),
+//             ),
+//           )
+         ],
+       ),
+     );
+  }
+
+  Widget _myListView(BuildContext context, TextEditingController cityController) {
+
+    final titles = ['bike', 'boat', 'bus', 'car',
+      'railway', 'run', 'subway', 'transit', 'walk'];
+
+    final icons = [Icons.directions_bike, Icons.directions_boat,
+      Icons.directions_bus, Icons.directions_car, Icons.directions_railway,
+      Icons.directions_run, Icons.directions_subway, Icons.directions_transit,
+      Icons.directions_walk];
+
+    return ListView.builder(
+      itemCount: titles.length,
+      itemBuilder: (context, index) {
+        return Card( //                           <-- Card widget
+          child: ListTile(
+            leading: Icon(icons[index]),
+            title: Text(titles[index]),
+            onTap:()=>  weatherBloc.add(FetchWeather(cityController.text)),
+          ),
+        );
+      },
+    );
   }
 
 }

@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterweather/weather_bloc.dart';
 import 'package:flutterweather/weather_model.dart';
 
-
 class ShowWeather extends StatefulWidget {
-  ShowWeather();
+  final PageController _pageController;
+
+  ShowWeather(this._pageController);
 
   @override
   _ShowWeatherState createState() => _ShowWeatherState();
@@ -23,28 +24,45 @@ class _ShowWeatherState extends State<ShowWeather> {
         child: Column(
           children: <Widget>[
             BlocBuilder<WeatherBloc, WeatherState>(
-              bloc: _weatherBloc,
+                bloc: _weatherBloc,
                 builder: (context, state) {
                   if (state is WeatherIsLoaded) {
-                    WeatherModel weatherUpdate = (state.props[0] as WeatherModel);
+                    WeatherModel weatherUpdate =
+                        (state.props[0] as WeatherModel);
                     return Column(
                       children: <Widget>[
-                        Text(state.getWeather.city, style: TextStyle(fontSize: 40.0, color: Colors.white),),
-                        Text(weatherUpdate.temp.toString(), style: TextStyle(fontSize: 40.0, color: Colors.white)),
-                        Text(weatherUpdate.humidity.toString(), style: TextStyle(fontSize: 40.0, color: Colors.white)),
-                        Text(weatherUpdate.temp_max.toString(), style: TextStyle(fontSize: 40.0, color: Colors.white)),
-                        Text(weatherUpdate.temp_min.toString(), style: TextStyle(fontSize: 40.0, color: Colors.white)),
-
+                        Text(
+                          state.getWeather.city,
+                          style: TextStyle(fontSize: 40.0, color: Colors.white),
+                        ),
+                        Text(weatherUpdate.temp.toString(),
+                            style:
+                                TextStyle(fontSize: 40.0, color: Colors.white)),
+                        Text(weatherUpdate.humidity.toString(),
+                            style:
+                                TextStyle(fontSize: 40.0, color: Colors.white)),
+                        Text(weatherUpdate.temp_max.toString(),
+                            style:
+                                TextStyle(fontSize: 40.0, color: Colors.white)),
+                        Text(weatherUpdate.temp_min.toString(),
+                            style:
+                                TextStyle(fontSize: 40.0, color: Colors.white)),
+                        RaisedButton(
+                          child: Text("Bakc"),
+                          onPressed: () => widget._pageController.previousPage(
+                              duration: Duration(milliseconds: 250),
+                              curve: Curves.linear),
+                        )
                       ],
                     );
                   } else {
                     return Text("Error");
                   }
-
                 }),
           ],
         ));
   }
+
   @override
   void dispose() {
     // TODO: implement dispose

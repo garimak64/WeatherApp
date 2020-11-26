@@ -46,7 +46,7 @@ class _MyHomeState extends State<MyHome> {
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
             new Center(child: SearchPage(_pageController)),
-            new Center(child: ShowWeather()),
+            new Center(child: ShowWeather(_pageController)),
           ],
           scrollDirection: Axis.horizontal,
           controller: _pageController,
