@@ -19,48 +19,83 @@ class _ShowWeatherState extends State<ShowWeather> {
   Widget build(BuildContext context) {
     _weatherBloc = BlocProvider.of<WeatherBloc>(context);
 
-    return Container(
-        padding: EdgeInsets.only(right: 32, left: 32, top: 10),
-        child: Column(
-          children: <Widget>[
-            BlocBuilder<WeatherBloc, WeatherState>(
-                bloc: _weatherBloc,
-                builder: (context, state) {
-                  if (state is WeatherIsLoaded) {
-                    WeatherModel weatherUpdate =
-                        (state.props[0] as WeatherModel);
-                    return Column(
-                      children: <Widget>[
-                        Text(
-                          state.getWeather.city,
-                          style: TextStyle(fontSize: 40.0, color: Colors.white),
-                        ),
-                        Text(weatherUpdate.temp.toString(),
-                            style:
-                                TextStyle(fontSize: 40.0, color: Colors.white)),
-                        Text(weatherUpdate.humidity.toString(),
-                            style:
-                                TextStyle(fontSize: 40.0, color: Colors.white)),
-                        Text(weatherUpdate.temp_max.toString(),
-                            style:
-                                TextStyle(fontSize: 40.0, color: Colors.white)),
-                        Text(weatherUpdate.temp_min.toString(),
-                            style:
-                                TextStyle(fontSize: 40.0, color: Colors.white)),
-                        RaisedButton(
-                          child: Text("Bakc"),
-                          onPressed: () => widget._pageController.previousPage(
-                              duration: Duration(milliseconds: 250),
-                              curve: Curves.linear),
-                        )
-                      ],
-                    );
-                  } else {
-                    return Text("Error");
-                  }
-                }),
-          ],
-        ));
+    return Scaffold(
+      backgroundColor: Colors.indigo,
+
+      body: Container(
+          padding: EdgeInsets.only(right: 32, left: 32, top: 10),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(right:250.0, top: 20),
+                child: IconButton(icon: Icon(Icons.arrow_back),
+                    color: Colors.white,
+                    iconSize: 30,
+                    onPressed: () {
+                      _weatherBloc.add(ResetWeather());
+                      widget._pageController.previousPage(
+                          duration: Duration(milliseconds: 250),
+                          curve: Curves.linear);}),
+              ),
+
+              BlocBuilder<WeatherBloc, WeatherState>(
+                  bloc: _weatherBloc,
+                  builder: (context, state) {
+                    if (state is WeatherIsLoaded) {
+                      WeatherModel weatherUpdate =
+                          (state.props[0] as WeatherModel);
+                      return Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 40,
+                          ),
+                          Center(
+                            child: Text(
+                              state.getWeather.city,
+                              style: TextStyle(fontSize: 40.0, color: Colors.white),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Icon(Icons.cloud,
+                          color: Colors.white,
+                          size: 150,),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text("Temp: "+ weatherUpdate.temp.toString() +" K",
+                              style:
+                                  TextStyle(fontSize: 30.0, color: Colors.white)),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text("Humidity: "+ weatherUpdate.humidity.toString(),
+                              style:
+                                  TextStyle(fontSize: 30.0, color: Colors.white)),
+                          SizedBox(
+                            height: 20,
+                          ),
+
+                          Text("Max Temp "+weatherUpdate.temp_max.toString() +" K",
+                              style:
+                                  TextStyle(fontSize: 25.0, color: Colors.white)),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text("Min Temp "+ weatherUpdate.temp_min.toString() +" K",
+                              style:
+                                  TextStyle(fontSize: 25.0, color: Colors.white)),
+
+                        ],
+                      );
+                    } else {
+                      return Text("");
+                    }
+                  }),
+            ],
+          )),
+    );
   }
 
   @override

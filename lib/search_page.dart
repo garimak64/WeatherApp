@@ -60,30 +60,7 @@ class _SearchPageState extends State<SearchPage> {
 
   }
 
-  Widget _buildProgrammCard() {
-    return Container(
-      height: 150,
-      decoration: BoxDecoration(
 
-
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-
-      ),
-      child: Card(
-        color: Colors.orange,
-        child: Column(
-          children: [
-
-            Expanded(
-              flex: 1,
-                child: Text('Ahmedabad')),
-            Expanded(flex:1,
-                child: aImage),
-          ],
-        ),
-      ),
-    );
-  }
 
   ListView getListView()
   {
@@ -110,11 +87,14 @@ class _SearchPageState extends State<SearchPage> {
 
                ),
                child: ListTile(
-                 leading:images[index],
-                 title: Text(cities[index],
-                 style: TextStyle(
-                   color: Colors.white
-                 ),),
+
+                 title: Center(
+                   child: Text(cities[index],
+                   style: TextStyle(
+                     fontSize: 30,
+                     color: Colors.white
+                   ),),
+                 ),
                  onTap: ()=>  weatherBloc.add(FetchWeather(cities[index])),
                ),
              ),
